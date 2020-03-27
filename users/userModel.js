@@ -20,7 +20,7 @@ function findBy(filter) {
   return db('users')
     .where(filter)
     // .select('id', 'username', 'password', 'location', 'email')
-    .first();
+    // .first();
 }
 
 function add(user) {
@@ -35,5 +35,5 @@ function add(user) {
 function findById(username) {
   return db('users')
     .where({ username })
-    .first();
+    // .first();
 }
