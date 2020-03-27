@@ -10,19 +10,16 @@ const Users = require('../users/userModel');
 
 router.post('/register', (req, res) => {
   const user = req.body;
-
-  const ROUNDS = process.env.HASHING_ROUNDS || 8;
-  const hash = bcrypt.hashSync(user.password, ROUNDS);
-
+  // const ROUNDS = process.env.HASHING_ROUNDS || 8;
+  const hash = bcrypt.hashSync(user.password, 8);
   user.password = hash;
-  const token = generateToken(user);
-
+  // const token = generateToken(user);
 
     Users.add(user)
         .then(saved => {
             res.status(201).json({
                 // token: token,
-                message: `Welcome ${user.username}`,
+                message: `Welcome ${user.username}`
             });
         })
         .catch(err => {
@@ -39,9 +36,7 @@ router.post('/login', (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
-        // req.session.user = {
-        //   id: user.id,
-        //   username: user.username,
+        // req.session.user = user
         res.status(200).json({ message: `Welcome ${user.username}!, have a token ....`, token})
 
       } else {
