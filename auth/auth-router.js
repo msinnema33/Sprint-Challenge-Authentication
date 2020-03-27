@@ -10,11 +10,14 @@ const Users = require('../users/userModel');
 
 router.post('/register', (req, res) => {
   const user = req.body;
-    const hash = bcrypt.hashSync(user.password, 10);
-    user.password = hash;
 
-    const token = generateToken(user);
+  const ROUNDS = process.env.HASHING_ROUNDS || 8;
+  const hash = bcrypt.hashSync(user.password, ROUNDS);
 
+  user.password = hash;
+  const token = generateToken(user);
+
+  
     Users.add(user)
         .then(user => {
             res.status(201).json({
