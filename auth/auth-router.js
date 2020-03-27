@@ -21,7 +21,7 @@ router.post('/register', (req, res) => {
     Users.add(user)
         .then(saved => {
             res.status(201).json({
-                token: token,
+                // token: token,
                 message: `Welcome ${user.username}`,
             });
         })
@@ -34,9 +34,9 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  Users.findBy({ username })
+  Users.findById({ username })
     .first()
-    .then(([user]) => {
+    .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
         // req.session.user = {
